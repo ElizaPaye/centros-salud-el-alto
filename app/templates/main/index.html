@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+{% block title %}Mapa de Centros de Salud - El Alto{% endblock %}
+
+{% block content %}
+<div class="hero-salud">
+    <h1><i class="bi bi-heart-pulse-fill me-2"></i>Cobertura Sanitaria de El Alto</h1>
+    <p>Encuentra centros de salud, hospitales y postas sanitarias cercanas, conoce los especialidad que ofrecen y consulta la cobertura de salud por distrito.</p>
+    <div class="hero-stats">
+        <div class="hero-stat-card">
+            <div class="valor">{{ distritos|length }}</div>
+            <div class="etiqueta">Distritos</div>
+        </div>
+        <div class="hero-stat-card">
+            <div class="valor">{{ tipos|length }}</div>
+            <div class="etiqueta">Tipos de centro</div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-3">
+    <div class="col-md-4">
+        <select id="filtroDistrito" class="form-select">
+            <option value="">Todos los distritos</option>
+            {% for d in distritos %}
+                <option value="{{ d.id }}">{{ d.nombre }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-md-4">
+        <select id="filtroTipo" class="form-select">
+            <option value="">Todos los tipos</option>
+            {% for t in tipos %}
+                <option value="{{ t.id }}">{{ t.nombre }}</option>
+            {% endfor %}
+        </select>
+    </div>
+</div>
+
+<div id="mapa"></div>
+
+<div id="listaCentros" class="row mt-4"></div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+const mapa = L.map('mapa').setView([-16.5050, -68.1700], 12);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap'
+}).addTo(mapa);
+
+let marcadores = [];
+let capaDistritos = null;
+
+// 1. Función optimizada para forzar colores diferentes por número extraído
+function obtenerColorDistrito(distrito) {
+    if (!distrito) return '#999999';
+    
+    // Extraer solo los números del texto (por si viene "Distrito 1" o "D-1" -> se vuelve "1")
+    const numeroDistrito = distrito.toString().replace(/\D/g, '');
+    const idFinal = numeroDistrito || distrito.toString(); // Si no hay números, usa el texto entero
+
+    // Paleta de colores fija y de alto contraste para los distritos de El Alto
+    const coloresFijos = {
+        "1": "#E31A1C",  // Rojo
+        "2": "#33A02C",  // Verde
+        "3": "#1F78B4",  // Azul
+        "4": "#FF7F00",  // Naranja
+        "5": "#6A3D9A",  // Morado
+        "6": "#B15928",  // Café
+        "7": "#A6CEE3",  // Azul claro
+        "8": "#B2DF8A",  // Verde claro
+        "9": "#FB9A99",  // Rosado
+        "10": "#FDBF6F", // Amarillo/Naranja claro
+        "11": "#CAB2D6", // Lila
+        "12": "#FFFF99", // Amarillo
+        "13": "#8DD3C7", // Turquesa
+        "14": "#BEBADA"  // Gris azulado
+    };
+
+    // Si coincide con nuestra lista, devuelve el color; si es un distrito raro, genera uno dinámico
+    if (coloresFijos[idFinal]) {
+        return coloresFijos[idFinal];
+    }
+
+    // Alternativa matemática si el ID no está en la lista de arriba
+    let hash = 0;
+    for (let i = 0; i < idFinal.length; i++) {
+        hash = idFinal.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    return '#' + ('000000' + (hash & 0xFFFFFF).toString(16)).slice(-6);
+}
+
+// 2. Aplicar el estilo asegurando que use fillcolor
+function estiloDistrito(feature) {
+    // Tomamos la propiedad del GeoJSON
+    const valorDistrito = feature.properties.c_dist_mun;
+    const colorDinamico = obtenerColorDistrito(valorDistrito);
+    
+    return {
+        color: '#333333',           // Línea de borde gris oscuro para separar distritos
+        weight: 1.5,                // Grosor del borde
+        fillColor: colorDinamico,   // ¡ESTA ES LA CLAVE! El color de fondo de cada distrito
+        fillOpacity: 0.6            // Opacidad del fondo (subido a 0.6 para que resalte más)
+    };
+}
+
+// Cargar GeoJSON de Distritos
+fetch("{{ url_for('static', filename='data/mapa_elalto.geojson') }}")
+    .then(res => res.json())
+    .then(data => {
+        capaDistritos = L.geoJSON(data, {
+            style: estiloDistrito, 
+            onEachFeature: (feature, layer) => {
+                layer.on('click', () => {
+                    const select = document.getElementById('filtroDistrito');
+                    
+                    // Extraemos solo el número del GeoJSON (ej: "6")
+                    const numeroGeoJSON = feature.properties.c_dist_mun.toString().replace(/\D/g, '');
+                    
+                    // Buscamos la opción correspondiente en el select comparando solo números
+                    for (let i = 0; i < select.options.length; i++) {
+                        const numeroSelect = select.options[i].text.replace(/\D/g, '');
+                        if (numeroGeoJSON === numeroSelect) {
+                            select.selectedIndex = i; // Selecciona la opción numéricamente correcta
+                            break;
+                        }
+                    }
+                    
+                    cargarCentros();
+                });
+                layer.bindTooltip(`Distrito: ${feature.properties.c_dist_mun}`);
+            }
+        }).addTo(mapa);
+    });
+
+function cargarCentros() {
+    marcadores.forEach(m => mapa.removeLayer(m));
+    marcadores = [];
+    document.getElementById('listaCentros').innerHTML = '';
+
+    const distritoId = document.getElementById('filtroDistrito').value;
+    const tipoId = document.getElementById('filtroTipo').value;
+    
+    let url = `/api/centros?distrito_id=${distritoId}&tipo_id=${tipoId}`;
+
+    fetch(url)
+        .then(res => res.json())
+        .then(centros => {
+            centros.forEach(c => {
+                const marcador = L.marker([c.latitud, c.longitud]).addTo(mapa);
+                marcador.bindPopup(`<b>${c.nombre}</b><br>${c.tipo}<br>${c.direccion}`);
+                marcadores.push(marcador);
+
+                const card = document.createElement('div');
+                card.className = 'col-md-4 mb-3';
+                card.innerHTML = `
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">${c.nombre}</h5>
+                            <p class="card-text mb-1"><strong>Distrito:</strong> ${c.distrito}</p>
+                            <a href="/centro/${c.id}" class="btn btn-sm btn-outline-success">Ver detalle</a>
+                        </div>
+                    </div>`;
+                document.getElementById('listaCentros').appendChild(card);
+            });
+        });
+}
+
+document.getElementById('filtroDistrito').addEventListener('change', cargarCentros);
+document.getElementById('filtroTipo').addEventListener('change', cargarCentros);
+cargarCentros();
+</script>
+{% endblock %}

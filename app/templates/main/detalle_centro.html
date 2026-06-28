@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}{{ centro.nombre }}{% endblock %}
+
+{% block content %}
+<a href="{{ url_for('main.index') }}" class="btn btn-link mb-3">&larr; Volver al mapa</a>
+<div class="card mb-4">
+    <div class="card-body">
+        <h3>{{ centro.nombre }}</h3>
+        <p><strong>Tipo:</strong> {{ centro.tipo_centro.nombre }}</p>
+        <p><strong>Distrito:</strong> {{ centro.distrito.nombre }}</p>
+        <p><strong>Dirección:</strong> {{ centro.direccion }}</p>
+        <p><strong>Horario:</strong> {{ centro.horario }}</p>
+        <p><strong>Teléfono:</strong> {{ centro.telefono }}</p>
+        <p><strong>Capacidad:</strong> {{ centro.capacidad }} pacientes</p>
+        <p><strong>Especialidades:</strong>
+            {% for cs in centro.especialidades %}
+                <span class="badge bg-success">{{ cs.especialidad.nombre }}</span>
+            {% endfor %}
+        </p>
+    </div>
+</div>
+
+<h4>Comentarios de la comunidad</h4>
+{% for c in centro.comentarios %}
+    <div class="border rounded p-2 mb-2">
+        <strong>{{ c.usuario.nombre }}</strong> - {{ c.calificacion }}/5 ⭐
+        <p class="mb-0">{{ c.comentario }}</p>
+    </div>
+{% else %}
+    <p class="text-muted">Aún no hay comentarios.</p>
+{% endfor %}
+
+<form method="POST" class="mt-3">
+    <div class="mb-2">
+        <label class="form-label">Calificación (1-5)</label>
+        <input type="number" name="calificacion" min="1" max="5" class="form-control" style="width:120px" required>
+    </div>
+    <div class="mb-2">
+        <label class="form-label">Comentario</label>
+        <textarea name="comentario" class="form-control" rows="3"></textarea>
+    </div>
+    <button class="btn btn-success">Enviar comentario</button>
+</form>
+{% endblock %}

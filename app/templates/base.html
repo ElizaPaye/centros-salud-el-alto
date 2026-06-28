@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Centros de Salud - El Alto{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/estilos.css') }}">
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark navbar-institucional">
+    <div class="container">
+        <a class="navbar-brand" href="{{ url_for('main.index') }}">
+            <span class="brand-icon"><i class="bi bi-heart-pulse-fill"></i></span>
+            <span class="brand-text">GeoMed <strong>El Alto</strong></span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ms-auto align-items-lg-center">
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('main.index') }}"><i class="bi bi-map me-1"></i>Mapa</a></li>
+                {% if current_user.is_authenticated %}
+                    {% if current_user.tiene_rol('Administrador', 'Gestor') %}
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('centros.listar') }}"><i class="bi bi-hospital me-1"></i>Centros</a></li>
+                    {% endif %}
+                    {% if current_user.tiene_rol('Administrador') %}
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('admin.dashboard') }}"><i class="bi bi-speedometer2 me-1"></i>Panel Admin</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('admin.base_datos') }}"><i class="bi bi-database me-1"></i>Base de Datos</a></li>
+                    {% endif %}
+                    <li class="nav-item"><span class="nav-link user-pill"><i class="bi bi-person-circle me-1"></i>{{ current_user.nombre }} <span class="badge-rol">{{ current_user.rol.nombre }}</span></span></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.logout') }}"><i class="bi bi-box-arrow-right me-1"></i>Salir</a></li>
+                {% else %}
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.login') }}">Iniciar sesión</a></li>
+                    <li class="nav-item"><a class="nav-link btn btn-sm btn-acento text-white ms-2" href="{{ url_for('auth.registro') }}">Registrarse</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-3">
+    {% with mensajes = get_flashed_messages(with_categories=true) %}
+        {% if mensajes %}
+            {% for categoria, mensaje in mensajes %}
+                <div class="alert alert-{{ categoria }} alert-dismissible fade show" role="alert">
+                    {{ mensaje }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+</div>
+
+<main class="container mb-5">
+    {% block content %}{% endblock %}
+</main>
+
+<footer class="footer-institucional text-center py-4 mt-5">
+    <small>Sistema Web de Visualización de Centros de Salud y Cobertura Sanitaria &middot; Gobierno Autónomo Municipal de El Alto &copy; 2026</small>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% block extra_scripts %}{% endblock %}
+</body>
+</html>

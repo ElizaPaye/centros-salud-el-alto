@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Distritos{% endblock %}
+{% block content %}
+<h3>Gestión de Distritos</h3>
+
+<form method="POST" class="row g-2 mb-4">
+    <div class="col-md-4"><input name="nombre" class="form-control" placeholder="Nombre del distrito" required></div>
+    <div class="col-md-3"><input name="poblacion_total" type="number" class="form-control" placeholder="Población"></div>
+    <div class="col-md-3"><input name="superficie_km2" type="number" step="any" class="form-control" placeholder="Superficie km2"></div>
+    <div class="col-md-2"><button class="btn btn-success w-100">Agregar</button></div>
+</form>
+
+<div class="table-card">
+<div class="table-responsive">
+<table class="table table-striped mb-0">
+    <thead><tr><th>Nombre</th><th>Población</th><th>Superficie km²</th><th>Acciones</th></tr></thead>
+    <tbody>
+    {% for d in distritos %}
+        <tr>
+            <td>{{ d.nombre }}</td>
+            <td>{{ d.poblacion_total }}</td>
+            <td>{{ d.superficie_km2 }}</td>
+            <td>
+
+                <a href="{{ url_for('admin.editar_distrito', distrito_id=d.id) }}"
+                class="btn btn-sm btn-outline-primary">
+                    Editar
+                </a>
+
+                <form method="POST" action="{{ url_for('admin.eliminar_distrito', distrito_id=d.id) }}" onsubmit="return confirm('¿Eliminar distrito?');">
+                    <button class="btn btn-sm btn-outline-danger">Eliminar</button>
+                </form>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</div>
+</div>
+{% endblock %}

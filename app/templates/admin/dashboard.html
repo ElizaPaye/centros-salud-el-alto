@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+{% block title %}Panel Administrativo{% endblock %}
+
+{% block content %}
+<h3 class="mb-4"><i class="bi bi-speedometer2 me-2"></i>Panel Administrativo</h3>
+
+<div class="row mb-4 g-3">
+    <div class="col-md-3">
+        <div class="stat-card tema-primario">
+            <i class="bi bi-hospital-fill icono"></i>
+            <div class="valor">{{ total_centros }}</div>
+            <div class="etiqueta">Centros de salud</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card tema-azul">
+            <i class="bi bi-geo-alt-fill icono"></i>
+            <div class="valor">{{ total_distritos }}</div>
+            <div class="etiqueta">Distritos</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card tema-acento">
+            <i class="bi bi-people-fill icono"></i>
+            <div class="valor">{{ total_usuarios }}</div>
+            <div class="etiqueta">Usuarios registrados</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card tema-gris">
+            <i class="bi bi-chat-dots-fill icono"></i>
+            <div class="valor">{{ total_comentarios }}</div>
+            <div class="etiqueta">Comentarios ciudadanos</div>
+        </div>
+    </div>
+</div>
+
+<div class="mb-4">
+    <a href="{{ url_for('admin.usuarios') }}" class="btn btn-outline-success btn-sm"><i class="bi bi-people me-1"></i>Gestionar Usuarios</a>
+    <a href="{{ url_for('admin.distritos') }}" class="btn btn-outline-success btn-sm"><i class="bi bi-geo-alt me-1"></i>Gestionar Distritos</a>
+    <a href="{{ url_for('admin.especialidades') }}" class="btn btn-outline-success btn-sm"><i class="bi bi-clipboard2-pulse me-1"></i>Gestionar Especialidades</a>
+    <a href="{{ url_for('centros.listar') }}" class="btn btn-outline-success btn-sm"><i class="bi bi-hospital me-1"></i>Gestionar Centros</a>
+    <a href="{{ url_for('admin.base_datos') }}" class="btn btn-acento text-white btn-sm"><i class="bi bi-database me-1"></i>Ver Base de Datos</a>
+</div>
+<!-- aqui van los gráficos y tablas de estadísticas -->
+<div class="row">
+    <div class="col-md-8">
+        <div class="stat-card">
+            <h5 style="margin-bottom: 20px;">Centros por distrito</h5>
+            <div style="position: relative; height: 300px; width: 100%;">
+                <canvas id="chartDistrito"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="stat-card">
+            <h5 style="margin-bottom: 20px;">Centros por tipo</h5>
+            <div style="position: relative; height: 300px; width: 100%;">
+                <canvas id="chartTipo"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h5 class="mt-5">Índice de cobertura sanitaria (habitantes por centro de salud)</h5>
+<table class="table table-bordered">
+    <thead><tr><th>Distrito</th><th>Población</th><th>Nº Centros</th><th>Habitantes/Centro</th></tr></thead>
+    <tbody>
+    {% for c in cobertura %}
+        <tr>
+            <td>{{ c.distrito }}</td>
+            <td>{{ c.poblacion }}</td>
+            <td>{{ c.centros }}</td>
+            <td>{{ c.indice if c.indice else 'Sin centros' }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+// Configuración global de la fuente y color de texto
+Chart.defaults.font.family = "'Open Sans', 'Segoe UI', sans-serif";
+Chart.defaults.color = '#585858';
+
+// 1. Gráfico de Barras (Distritos)
+new Chart(document.getElementById('chartDistrito'), {
+    type: 'bar',
+    data: {
+        labels: {{ centros_por_distrito | map(attribute=0) | list | tojson }},
+        datasets: [{
+            label: 'Centros de salud',
+            data: {{ centros_por_distrito | map(attribute=1) | list | tojson }},
+            // Color Verde Teal principal para las barras
+            backgroundColor: '#3DB3A2', 
+            borderRadius: 3,
+            borderSkipped: false
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false, // Fundamental para que tu div de 300px funcione
+        plugins: {
+            legend: {
+                display: false
+            }
+        },
+        scales: {
+            x: {
+                grid: { display: false },
+                ticks: { color: '#9E9E9E' }
+            },
+            y: {
+                beginAtZero: true,
+                grid: {
+                    color: '#E4E4E4',
+                    drawBorder: false
+                },
+                ticks: {
+                    color: '#9E9E9E',
+                    stepSize: 1
+                }
+            }
+        }
+    }
+});
+
+// 2. Gráfico de Dona (Tipos)
+new Chart(document.getElementById('chartTipo'), {
+    type: 'doughnut', 
+    data: {
+        labels: {{ centros_por_tipo | map(attribute=0) | list | tojson }},
+        datasets: [{
+            data: {{ centros_por_tipo | map(attribute=1) | list | tojson }},
+            // La nueva paleta de colores para las porciones
+            backgroundColor: [
+                '#3DB3A2', // Verde Teal
+                '#0F649B', // Azul Fuerte
+                '#E47A53', // Naranja/Coral
+                '#2A2E33'  // Gris Pizarra Oscuro
+            ],
+            borderColor: '#FFFFFF',
+            borderWidth: 3,
+            hoverOffset: 4
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false, // Fundamental para que tu div de 300px funcione
+        plugins: {
+            legend: {
+                position: 'bottom',
+                labels: {
+                    padding: 20,
+                    usePointStyle: true,
+                }
+            }
+        },
+        cutout: '70%' // Grosor de la dona
+    }
+});
+</script>
+{% endblock %}

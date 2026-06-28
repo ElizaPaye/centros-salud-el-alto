@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Editar' if centro else 'Nuevo' }} Centro de Salud{% endblock %}
+
+{% block content %}
+<h3>{{ 'Editar' if centro else 'Nuevo' }} Centro de Salud</h3>
+<form method="POST">
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label class="form-label">Nombre</label>
+            <input type="text" name="nombre" class="form-control" value="{{ centro.nombre if centro else '' }}" required>
+        </div>
+        <div class="col-md-3 mb-3">
+            <label class="form-label">Tipo de centro</label>
+            <select name="tipo_centro_id" class="form-select" required>
+                {% for t in tipos %}
+                    <option value="{{ t.id }}" {{ 'selected' if centro and centro.tipo_centro_id == t.id }}>{{ t.nombre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-3 mb-3">
+            <label class="form-label">Distrito</label>
+            <select name="distrito_id" class="form-select" required>
+                {% for d in distritos %}
+                    <option value="{{ d.id }}" {{ 'selected' if centro and centro.distrito_id == d.id }}>{{ d.nombre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Dirección</label>
+        <input type="text" name="direccion" class="form-control" value="{{ centro.direccion if centro else '' }}">
+    </div>
+
+    <div class="row">
+        <div class="col-md-3 mb-3">
+            <label class="form-label">Latitud</label>
+            <input type="number" step="any" name="latitud" class="form-control" value="{{ centro.latitud if centro else '-16.5050' }}" required>
+        </div>
+        <div class="col-md-3 mb-3">
+            <label class="form-label">Longitud</label>
+            <input type="number" step="any" name="longitud" class="form-control" value="{{ centro.longitud if centro else '-68.1700' }}" required>
+        </div>
+        
+        <div class="col-md-3 mb-3">
+            <label class="form-label">Capacidad</label>
+            <input type="number" name="capacidad" class="form-control" value="{{ centro.capacidad if centro else 0 }}">
+        </div>
+        <div class="col-md-3 mb-3">
+            <label class="form-label">Estado</label>
+            <select name="estado" class="form-select">
+                <option value="Activo" {{ 'selected' if centro and centro.estado == 'Activo' }}>Activo</option>
+                <option value="Inactivo" {{ 'selected' if centro and centro.estado == 'Inactivo' }}>Inactivo</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Seleccionar ubicación en el mapa</label>
+        <div id="mapaCentro" style="height:350px;"></div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label class="form-label">Horario</label>
+            <input type="text" name="horario" class="form-control" value="{{ centro.horario if centro else '' }}" placeholder="Ej: 07:00 - 19:00">
+        </div>
+        <div class="col-md-6 mb-3">
+            <label class="form-label">Teléfono</label>
+            <input type="text" name="telefono" class="form-control" value="{{ centro.telefono if centro else '' }}">
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Especialidades ofrecidos</label>
+        <div class="row">
+            {% for s in especialidades %}
+            <div class="col-md-3">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="especialidades" value="{{ s.id }}" id="serv{{ s.id }}"
+                        {{ 'checked' if especialidades_actuales and s.id in especialidades_actuales }}>
+                    <label class="form-check-label" for="serv{{ s.id }}">{{ s.nombre }}</label>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-success">Guardar</button>
+    <a href="{{ url_for('centros.listar') }}" class="btn btn-secondary">Cancelar</a>
+</form>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const latInput = document.querySelector('[name="latitud"]');
+    const lngInput = document.querySelector('[name="longitud"]');
+
+    const lat = parseFloat(latInput.value) || -16.5050;
+    const lng = parseFloat(lngInput.value) || -68.1700;
+
+    const mapaCentro = L.map('mapaCentro').setView([lat, lng], 13);
+
+    L.tileLayer(
+        'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        {
+            attribution: '&copy; OpenStreetMap'
+        }
+    ).addTo(mapaCentro);
+
+    let marcador = L.marker([lat, lng]).addTo(mapaCentro);
+
+    mapaCentro.on('click', function(e) {
+
+        marcador.setLatLng(e.latlng);
+
+        latInput.value = e.latlng.lat.toFixed(6);
+        lngInput.value = e.latlng.lng.toFixed(6);
+
+    });
+
+});
+</script>
+
+{% endblock %}

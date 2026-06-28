@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Gestión de Centros{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h3>Gestión de Centros de Salud</h3>
+    <a href="{{ url_for('centros.nuevo') }}" class="btn btn-success">+ Nuevo Centro</a>
+</div>
+
+<div class="table-card">
+<div class="table-responsive">
+<table class="table table-striped mb-0">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Tipo</th>
+            <th>Distrito</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for c in centros %}
+        <tr>
+            <td>{{ c.nombre }}</td>
+            <td>{{ c.tipo_centro.nombre }}</td>
+            <td>{{ c.distrito.nombre }}</td>
+            <td>
+                <span class="badge {{ 'bg-success' if c.estado == 'Activo' else 'bg-secondary' }}">{{ c.estado }}</span>
+            </td>
+            <td>
+                <a href="{{ url_for('centros.editar', centro_id=c.id) }}" class="btn btn-sm btn-outline-primary">Editar</a>
+                {% if current_user.tiene_rol('Administrador') %}
+                <form method="POST" action="{{ url_for('centros.eliminar', centro_id=c.id) }}" class="d-inline" onsubmit="return confirm('¿Eliminar este centro?');">
+                    <button class="btn btn-sm btn-outline-danger">Eliminar</button>
+                </form>
+                {% endif %}
+            </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="5" class="text-center text-muted">No hay centros registrados.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+</div>
+{% endblock %}

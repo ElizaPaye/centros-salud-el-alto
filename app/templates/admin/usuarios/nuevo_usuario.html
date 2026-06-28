@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h3>Nuevo Usuario</h3>
+
+<form method="POST">
+    <input name="nombre" placeholder="Nombre" class="form-control mb-2">
+    <input name="username" placeholder="Usuario" class="form-control mb-2">
+    <input name="email" placeholder="Email" class="form-control mb-2">
+    <input type="password" name="password" placeholder="Contraseña" class="form-control mb-2">
+
+    <select name="rol_id" class="form-control mb-2" required>
+        <option value="">Seleccione rol</option>
+        {% for r in roles %}
+            <option value="{{ r.id }}">{{ r.nombre }}</option>
+        {% endfor %}
+    </select>
+    
+    <button class="btn btn-success">Guardar</button>
+</form>
+
+
+{% endblock %}

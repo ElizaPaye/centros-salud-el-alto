@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Registro{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-5">
+        <h3 class="mb-4">Crear cuenta de ciudadano</h3>
+        <form method="POST">
+
+            <div class="mb-3">
+                <label class="form-label">Nombre de usuario</label>
+                <input type="text" name="username" class="form-control" autocomplete="username" required>
+                <small class="text-muted">Sin espacios. Lo usarás para iniciar sesión.</small>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Contraseña</label>
+                <input type="password" name="password" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-success w-100">Registrarme</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

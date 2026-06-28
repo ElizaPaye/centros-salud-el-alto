@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h3>Editar Usuario</h3>
+
+<form method="POST">
+    <input name="nombre" value="{{ usuario.nombre }}" class="form-control mb-2">
+    <input name="username" value="{{ usuario.username }}" class="form-control mb-2">
+    <input name="email" value="{{ usuario.email }}" class="form-control mb-2">
+
+    <div class="mb-2">
+        <label>Nueva contraseña (opcional)</label>
+        <input type="password" name="password" class="form-control">
+        <small>Dejar vacío para no cambiar la contraseña</small>
+    </div>
+
+    <label>Rol</label>
+    <select name="rol_id" class="form-control mb-2" required>
+        {% for r in roles %}
+            <option value="{{ r.id }}"
+                {% if usuario.rol_id == r.id %}selected{% endif %}>
+                {{ r.nombre }}
+            </option>
+        {% endfor %}
+    </select>
+    <button class="btn btn-primary">Actualizar</button>
+</form>
+
+{% endblock %}

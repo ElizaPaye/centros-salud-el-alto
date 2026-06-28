@@ -1,0 +1,852 @@
+/* ============================================
+   Sistema de Salud El Alto - Identidad visual
+   Modificado: Colores, fondos y fuentes basados en la imagen (Dashboard)
+   ============================================ */
+
+:root {
+    --color-primario: #3DB3A2; /* Verde agua/teal de las tarjetas superiores */
+    --color-primario-claro: #4DC2B1;
+    --color-primario-oscuro: #2A2E33; /* Gris oscuro/pizarra de la barra superior */
+    --color-acento: #0F649B; /* Azul oscuro del Timeline */
+    --color-acento-claro: #1A7AB5;
+    --color-fondo: #F4F6F9; /* Gris muy claro del fondo de la aplicación */
+    --color-texto: #585858; /* Gris oscuro para el texto normal */
+    --color-texto-suave: #9E9E9E; /* Gris claro para etiquetas */
+    --color-borde: #E4E4E4; /* Bordes suaves */
+    /* Las fuentes de la imagen son muy limpias, estilo Roboto u Open Sans */
+    --fuente-titulo: 'Roboto', 'Segoe UI', sans-serif;
+    --fuente-texto: 'Open Sans', 'Segoe UI', sans-serif;
+}
+
+body {
+    font-family: var(--fuente-texto);
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    line-height: 1.6;
+    min-height: 100vh;
+    /* --- NUEVO: Flexbox para el Footer --- */
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--fuente-titulo);
+    color: var(--color-texto);
+    font-weight: 400; /* La imagen usa fuentes de títulos más finas */
+}
+
+/* ---------- Navbar institucional ---------- */
+.navbar-institucional {
+    /* Fondo sólido gris pizarra como la barra superior de la imagen */
+    background: var(--color-primario-oscuro);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+    padding-top: .7rem;
+    padding-bottom: .7rem;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: .55rem;
+    font-family: var(--fuente-titulo);
+    font-size: 1.2rem;
+    color: #fff !important;
+}
+
+.brand-icon {
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-primario); /* Usamos el verde teal para destacar */
+    border-radius: 10px;
+    font-size: 1.1rem;
+    color: #fff;
+}
+
+.navbar-institucional .nav-link {
+    color: rgba(255,255,255,0.7) !important;
+    font-weight: 400;
+    font-size: .93rem;
+}
+
+.navbar-institucional .nav-link:hover {
+    color: #fff !important;
+}
+
+.user-pill {
+    background: rgba(255,255,255,0.05);
+    border-radius: 30px;
+    padding: .35rem .9rem !important;
+}
+
+.badge-rol {
+    background: var(--color-primario);
+    color: #fff;
+    border-radius: 20px;
+    padding: .15rem .55rem;
+    font-size: .72rem;
+    margin-left: .3rem;
+}
+
+.btn-acento {
+    background-color: var(--color-acento) !important;
+    color: #fff !important;
+    border: none;
+}
+
+/* ---------- Botones ---------- */
+.btn-success {
+    background-color: var(--color-primario) !important;
+    border-color: var(--color-primario) !important;
+    color: #fff;
+}
+.btn-success:hover {
+    background-color: var(--color-primario-claro) !important;
+    border-color: var(--color-primario-claro) !important;
+}
+.btn-outline-success {
+    color: var(--color-primario) !important;
+    border-color: var(--color-primario) !important;
+}
+.btn-outline-success:hover {
+    background-color: var(--color-primario) !important;
+    color: #fff !important;
+}
+.text-bg-success { background-color: var(--color-primario) !important; color: #fff; }
+
+/* ---------- Hero de la pagina principal ---------- */
+.hero-salud {
+    /* Utilizamos el azul del timeline para esta zona destacada */
+    background: var(--color-acento);
+    color: #fff;
+    border-radius: 4px; /* Bordes menos redondeados, más planos como la imagen */
+    padding: 2.6rem 2.4rem;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.hero-salud h1 {
+    color: #fff;
+    font-size: 2.1rem;
+    margin-bottom: .5rem;
+    font-weight: 300;
+}
+
+.hero-salud p {
+    color: rgba(255,255,255,0.85);
+    max-width: 640px;
+}
+
+.hero-stats {
+    display: flex;
+    gap: 1.2rem;
+    flex-wrap: wrap;
+    margin-top: 1.4rem;
+}
+
+.hero-stat-card {
+    background: rgba(255,255,255,0.1);
+    border-radius: 4px;
+    padding: .9rem 1.3rem;
+    min-width: 140px;
+}
+
+.hero-stat-card .valor {
+    font-family: var(--fuente-titulo);
+    font-size: 2.5rem; /* Números más grandes y finos como en la imagen */
+    font-weight: 300; /* Letra delgada como el "7", "10", "70" */
+    line-height: 1;
+}
+
+.hero-stat-card .etiqueta {
+    font-size: .78rem;
+    color: rgba(255,255,255,0.75);
+    text-transform: uppercase;
+    letter-spacing: .04em;
+}
+
+/* ---------- Mapa ---------- */
+#mapa {
+    height: 560px;
+    border-radius: 4px;
+    border: 1px solid var(--color-borde);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05); /* Sombra plana */
+}
+
+/* ---------- Cards de centros ---------- */
+.card-centro {
+    background: #fff;
+    border: 1px solid var(--color-borde);
+    border-radius: 4px;
+    transition: box-shadow .15s ease;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.card-centro:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Efecto hover suave */
+}
+
+.card-centro .card-title {
+    font-family: var(--fuente-titulo);
+    font-size: 1.05rem;
+    color: var(--color-texto);
+}
+
+/* ---------- Tarjetas de estadisticas del panel admin ---------- */
+.stat-card {
+    background: #fff; /* Las tarjetas en la imagen son de fondo blanco */
+    border: 1px solid var(--color-borde);
+    border-radius: 2px; /* Bordes muy cuadrados */
+    padding: 1.3rem 1.4rem;
+    color: var(--color-texto);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08); /* Sombra tipo flat-design */
+}
+
+.stat-card .icono {
+    font-size: 2.5rem;
+    color: var(--color-primario-claro); /* Iconos en color verde teal */
+    opacity: 0.8;
+}
+
+.stat-card .valor {
+    font-family: var(--fuente-titulo);
+    font-size: 3rem;
+    font-weight: 300; /* Números super finos */
+    color: var(--color-primario); /* Los números van en verde teal */
+}
+
+.stat-card .etiqueta {
+    font-size: .8rem;
+    text-transform: uppercase;
+    letter-spacing: .03em;
+    color: var(--color-texto-suave);
+}
+
+/* Elimino los gradientes y les doy colores sólidos basados en la imagen */
+.stat-card.tema-primario { border-top: 4px solid var(--color-primario); }
+.stat-card.tema-acento { border-top: 4px solid var(--color-acento); }
+.stat-card.tema-azul { border-top: 4px solid #1B4570; }
+.stat-card.tema-gris { border-top: 4px solid var(--color-primario-oscuro); }
+
+/* ---------- Tablas ---------- */
+.table thead th {
+    background-color: #fff; /* Las tablas limpias no usan fondos oscuros gruesos */
+    color: var(--color-texto);
+    font-family: var(--fuente-titulo);
+    font-weight: 600;
+    font-size: .85rem;
+    text-transform: uppercase;
+    letter-spacing: .02em;
+    border-bottom: 2px solid var(--color-borde);
+}
+
+.table-card {
+    background: #fff;
+    border-radius: 4px;
+    padding: 1.4rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    border: 1px solid var(--color-borde);
+}
+
+/* ---------- Footer ---------- */
+.footer-institucional {
+    background-color: var(--color-primario-oscuro);
+    color: rgba(255,255,255,0.5);
+    padding: 1.5rem 0;
+    font-size: 0.85rem;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    text-align: center; /* Para centrar el texto si no lo estaba */
+    /* --- NUEVO: Empuja el footer hacia abajo --- */
+    margin-top: auto; 
+    width: 100%;
+}
+
+/* ---------- Explorador de base de datos ---------- */
+.tabla-bd-card {
+    border: 1px solid var(--color-borde);
+    border-radius: 4px;
+    background: #fff;
+    padding: 1.1rem 1.3rem;
+    height: 100%;
+    transition: box-shadow .15s ease;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+.tabla-bd-card:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+.tabla-bd-card .nombre-tabla {
+    font-family: var(--fuente-titulo);
+    font-weight: 400;
+    color: var(--color-texto);
+}
+.tabla-bd-card .conteo {
+    font-size: 2rem;
+    font-weight: 300;
+    font-family: var(--fuente-titulo);
+    color: var(--color-primario); /* Verde teal para el conteo */
+}
+
+/* ============================================
+   RESPONSIVE - tablets y moviles
+   ============================================ */
+
+/* Tablets (hasta 768px) */
+@media (max-width: 768px) {
+    .hero-salud {
+        padding: 1.8rem 1.4rem;
+        border-radius: 4px;
+    }
+    .hero-salud h1 {
+        font-size: 1.5rem;
+    }
+    .hero-stats {
+        gap: .7rem;
+    }
+    .hero-stat-card {
+        min-width: 120px;
+        padding: .7rem 1rem;
+    }
+    #mapa {
+        height: 380px;
+    }
+    .stat-card {
+        padding: 1rem 1.1rem;
+    }
+    .stat-card .valor {
+        font-size: 2.2rem;
+    }
+    .table-card {
+        padding: .9rem;
+    }
+}
+
+/* Celulares (hasta 480px) */
+@media (max-width: 480px) {
+    .navbar-brand .brand-text {
+        font-size: 1rem;
+    }
+    .hero-salud h1 {
+        font-size: 1.25rem;
+    }
+    .hero-salud p {
+        font-size: .9rem;
+    }
+    #mapa {
+        height: 320px;
+    }
+    .hero-stat-card {
+        flex: 1 1 45%;
+    }
+    .tabla-bd-card .conteo {
+        font-size: 1.6rem;
+    }
+}
+
+/* Tablas siempre con scroll horizontal en pantallas chicas */
+.table-responsive {
+    -webkit-overflow-scrolling: touch;
+}
+
+
+
+/* ==========================================================================
+   Sistema de Salud El Alto - Identidad Visual & Dashboard Profesional
+   Paleta: Verde-Agua (Teal) Institucional + Gris Pizarra + Azul Técnico
+   Tipografía: Roboto (Títulos) + Open Sans (Texto)
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600&family=Roboto:wght@300;400;500;700&display=swap');
+
+:root {
+    /* Paleta de Colores Moderna (Inspirada en Dashboard de Referencia) */
+    --color-primario: #3DB3A2;        /* Verde agua / Teal principal */
+    --color-primario-claro: #4DC2B1;  /* Teal brillante para hovers */
+    --color-primario-oscuro: #2A2E33; /* Gris pizarra oscuro (Navbar/Sidebar) */
+    --color-acento: #0F649B;          /* Azul fuerte para elementos técnicos/Timeline */
+    --color-acento-claro: #1A7AB5;
+    --color-fondo: #F4F6F9;           /* Fondo gris muy claro y limpio */
+    --color-texto: #585858;           /* Gris oscuro suavizado para lectura */
+    --color-texto-suave: #9E9E9E;     /* Gris claro para subtítulos y etiquetas */
+    --color-borde: #E4E4E4;           /* Bordes sutiles y limpios */
+    
+    /* Tipografías */
+    --fuente-titulo: 'Roboto', 'Segoe UI', sans-serif;
+    --fuente-texto: 'Open Sans', 'Segoe UI', sans-serif;
+}
+
+/* ---------- Resets y Estilos Generales ---------- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--fuente-texto);
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--fuente-titulo);
+    color: #333333;
+    font-weight: 400; /* Estilo fino y sofisticado */
+    margin-bottom: 1rem;
+}
+
+/* ---------- Estructura del Layout (Sidebar + Main) ---------- */
+/* Para solucionar el colapso visual y mantener el menú a la izquierda */
+.app-container {
+    display: flex;
+    min-height: 100vh;
+    width: 100%;
+}
+
+.sidebar {
+    width: 260px;
+    background-color: var(--color-primario-oscuro);
+    color: #ffffff;
+    padding: 25px 20px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+}
+
+.main-content {
+    flex: 1;
+    padding: 30px;
+    background-color: var(--color-fondo);
+    overflow-y: auto;
+}
+
+/* ---------- Navbar Institucional Superior ---------- */
+.navbar-institucional {
+    background: var(--color-primario-oscuro);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+    padding: .7rem 1.5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    font-family: var(--fuente-titulo);
+    font-size: 1.25rem;
+    color: #ffffff !important;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.brand-icon {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-primario);
+    border-radius: 8px;
+    font-size: 1.1rem;
+    color: #ffffff;
+}
+
+.navbar-institucional .nav-link {
+    color: rgba(255,255,255,0.7) !important;
+    font-weight: 400;
+    font-size: .93rem;
+    transition: color 0.2s ease;
+}
+
+.navbar-institucional .nav-link:hover {
+    color: #ffffff !important;
+}
+
+.user-pill {
+    background: rgba(255,255,255,0.08);
+    border-radius: 30px;
+    padding: .4rem 1rem !important;
+    display: inline-flex;
+    align-items: center;
+}
+
+.badge-rol {
+    background: var(--color-primario);
+    color: #ffffff;
+    border-radius: 20px;
+    padding: .15rem .6rem;
+    font-size: .72rem;
+    margin-left: .5rem;
+    font-weight: 500;
+}
+
+/* ---------- Botones Personalizados ---------- */
+.btn {
+    font-family: var(--fuente-texto);
+    font-weight: 500;
+    padding: 0.5rem 1.2rem;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.btn-success {
+    background-color: var(--color-primario) !important;
+    border-color: var(--color-primario) !important;
+    color: #ffffff !important;
+}
+
+.btn-success:hover {
+    background-color: var(--color-primario-claro) !important;
+    border-color: var(--color-primario-claro) !important;
+}
+
+.btn-outline-success {
+    color: var(--color-primario) !important;
+    border-color: var(--color-primario) !important;
+    background: transparent;
+}
+
+.btn-outline-success:hover {
+    background-color: var(--color-primario) !important;
+    color: #ffffff !important;
+}
+
+.btn-acento {
+    background-color: var(--color-acento) !important;
+    border-color: var(--color-acento) !important;
+    color: #ffffff !important;
+}
+
+.btn-acento:hover {
+    background-color: var(--color-acento-claro) !important;
+    border-color: var(--color-acento-claro) !important;
+}
+
+.btn-danger-outline {
+    background: transparent;
+    border: 1px solid #d9534f;
+    color: #d9534f;
+    padding: 5px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.2s;
+}
+
+.btn-danger-outline:hover {
+    background: #d9534f;
+    color: white;
+}
+
+.text-bg-success { 
+    background-color: var(--color-primario) !important; 
+    color: #ffffff; 
+}
+
+/* ---------- Hero / Banner de Bienvenida ---------- */
+.hero-salud {
+    background: var(--color-acento);
+    color: #ffffff;
+    border-radius: 4px; /* Bordes rectos y limpios estilo flat-design */
+    padding: 2.5rem;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.hero-salud h1 {
+    color: #ffffff;
+    font-size: 2.2rem;
+    margin-bottom: .6rem;
+    font-weight: 300;
+}
+
+.hero-salud p {
+    color: rgba(255,255,255,0.85);
+    max-width: 650px;
+    font-weight: 400;
+}
+
+.hero-stats {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+}
+
+.hero-stat-card {
+    background: rgba(255,255,255,0.12);
+    border-radius: 4px;
+    padding: 1rem 1.5rem;
+    min-width: 150px;
+}
+
+.hero-stat-card .valor {
+    font-family: var(--fuente-titulo);
+    font-size: 2.6rem;
+    font-weight: 300; /* Números elegantes y finos */
+    line-height: 1;
+    margin-bottom: 4px;
+}
+
+.hero-stat-card .etiqueta {
+    font-size: .75rem;
+    color: rgba(255,255,255,0.75);
+    text-transform: uppercase;
+    letter-spacing: .05em;
+}
+
+/* ---------- Componentes de Control y Formularios ---------- */
+.header-actions {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+input, select, textarea {
+    padding: 8px 14px;
+    border: 1px solid var(--color-borde);
+    border-radius: 4px;
+    font-family: var(--fuente-texto);
+    color: var(--color-texto);
+    outline: none;
+    transition: border-color 0.2s;
+    background-color: #ffffff;
+}
+
+input:focus, select:focus {
+    border-color: var(--color-primario);
+}
+
+/* ---------- Sección de Mapas ---------- */
+#mapa {
+    height: 540px;
+    border-radius: 4px;
+    border: 1px solid var(--color-borde);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+/* ---------- Cards / Tarjetas de Información General ---------- */
+.card-centro {
+    background: #ffffff;
+    border: 1px solid var(--color-borde);
+    border-radius: 4px;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+}
+
+.card-centro:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 12px rgba(0,0,0,0.08);
+}
+
+.card-centro .card-title {
+    font-family: var(--fuente-titulo);
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #333333;
+}
+
+/* ---------- Tarjetas de Estadísticas del Panel Admin (Dashboard Metrices) ---------- */
+.stat-card {
+    background: #ffffff;
+    border: 1px solid var(--color-borde);
+    border-radius: 4px;
+    padding: 1.5rem;
+    color: var(--color-texto);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    margin-bottom: 1.5rem;
+}
+
+.stat-card .icono {
+    font-size: 2.6rem;
+    color: var(--color-primario-claro);
+    opacity: 0.8;
+    margin-bottom: 10px;
+}
+
+.stat-card .valor {
+    font-family: var(--fuente-titulo);
+    font-size: 3.2rem;
+    font-weight: 300; /* Letra ultradelgada como la referencia */
+    color: var(--color-primario);
+    line-height: 1;
+    margin-bottom: 5px;
+}
+
+.stat-card .etiqueta {
+    font-size: .8rem;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: var(--color-texto-suave);
+    font-weight: 500;
+}
+
+/* Bordes superiores de acento de color sólido según la categoría */
+.stat-card.tema-primario { border-top: 4px solid var(--color-primario); }
+.stat-card.tema-acento { border-top: 4px solid var(--color-acento); }
+.stat-card.tema-azul { border-top: 4px solid #1B4570; }
+.stat-card.tema-gris { border-top: 4px solid var(--color-primario-oscuro); }
+
+/* ---------- Tablas de Gestión Administrativa ---------- */
+.table-card {
+    background: #ffffff;
+    border-radius: 4px;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    border: 1px solid var(--color-borde);
+    margin-bottom: 1.5rem;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.table thead th {
+    background-color: #ffffff;
+    color: #333333;
+    font-family: var(--fuente-titulo);
+    font-weight: 600;
+    font-size: .85rem;
+    text-transform: uppercase;
+    letter-spacing: .03em;
+    padding: 14px 12px;
+    border-bottom: 2px solid var(--color-borde);
+    text-align: left;
+}
+
+.table tbody td {
+    padding: 14px 12px;
+    border-bottom: 1px solid var(--color-borde);
+    color: var(--color-texto);
+    font-size: 0.92rem;
+    vertical-align: middle;
+}
+
+.table tbody tr:hover {
+    background-color: #f9fbfb;
+}
+
+/* ---------- Explorador de Base de Datos ---------- */
+.tabla-bd-card {
+    border: 1px solid var(--color-borde);
+    border-radius: 4px;
+    background: #ffffff;
+    padding: 1.2rem 1.5rem;
+    height: 100%;
+    transition: box-shadow 0.2s ease;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+}
+
+.tabla-bd-card:hover {
+    box-shadow: 0 5px 12px rgba(0,0,0,0.08);
+}
+
+.tabla-bd-card .nombre-tabla {
+    font-family: var(--fuente-titulo);
+    font-weight: 400;
+    font-size: 1.1rem;
+    color: #333333;
+}
+
+.tabla-bd-card .conteo {
+    font-size: 2.2rem;
+    font-weight: 300;
+    font-family: var(--fuente-titulo);
+    color: var(--color-primario);
+    margin-top: 5px;
+}
+
+/* ---------- Footer Institucional ---------- */
+.footer-institucional {
+    background-color: var(--color-primario-oscuro);
+    color: rgba(255,255,255,0.5);
+    padding: 1.5rem 0;
+    font-size: 0.85rem;
+    border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+/* ==========================================================================
+   RESPONSIVE - Adaptabilidad móvil y tablets
+   ========================================================================== */
+
+@media (max-width: 992px) {
+    .app-container {
+        flex-direction: column;
+    }
+    .sidebar {
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        flex-wrap: wrap;
+        padding: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-salud {
+        padding: 1.8rem 1.5rem;
+    }
+    .hero-salud h1 {
+        font-size: 1.6rem;
+    }
+    .hero-stats {
+        gap: 1rem;
+    }
+    .hero-stat-card {
+        min-width: 120px;
+        padding: .8rem 1.2rem;
+    }
+    #mapa {
+        height: 380px;
+    }
+    .stat-card .valor {
+        font-size: 2.5rem;
+    }
+    .table-card {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar-brand .brand-text {
+        font-size: 1rem;
+    }
+    .hero-salud h1 {
+        font-size: 1.3rem;
+    }
+    .hero-salud p {
+        font-size: .88rem;
+    }
+    #mapa {
+        height: 300px;
+    }
+    .hero-stat-card {
+        flex: 1 1 100%;
+    }
+    .tabla-bd-card .conteo {
+        font-size: 1.6rem;
+    }
+}
+
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}

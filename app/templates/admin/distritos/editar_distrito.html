@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Editar Distrito{% endblock %}
+
+{% block content %}
+<h3>Editar Distrito</h3>
+
+<div class="table-card p-4">
+
+<form method="POST">
+
+    <div class="mb-3">
+        <label class="form-label">Nombre</label>
+        <input type="text"
+               name="nombre"
+               class="form-control"
+               value="{{ distrito.nombre }}"
+               required>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Población</label>
+        <input type="number"
+               name="poblacion_total"
+               class="form-control"
+               value="{{ distrito.poblacion_total }}">
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Superficie km²</label>
+        <input type="number"
+               step="any"
+               name="superficie_km2"
+               class="form-control"
+               value="{{ distrito.superficie_km2 }}">
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        Guardar Cambios
+    </button>
+
+    <a href="{{ url_for('admin.distritos') }}"
+       class="btn btn-secondary">
+        Cancelar
+    </a>
+
+</form>
+
+</div>
+{% endblock %}

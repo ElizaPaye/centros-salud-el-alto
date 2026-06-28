@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Tabla: {{ etiqueta }}{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-2">
+    <h3><i class="bi bi-table me-2"></i>{{ etiqueta }}</h3>
+    <a href="{{ url_for('admin.base_datos') }}" class="btn btn-outline-success btn-sm">&larr; Volver a Base de Datos</a>
+</div>
+<p class="text-muted">Nombre real de la tabla en la base de datos: <code>{{ clave }}</code> &middot; Total de registros: <strong>{{ filas|length }}</strong></p>
+
+{% if clave == 'usuarios' %}
+<div class="alert alert-info">
+    <i class="bi bi-shield-check me-1"></i> Por seguridad, las contraseñas no se muestran en texto plano: se almacenan como <em>hash</em> (Werkzeug/SHA-256) y nunca son visibles, ni siquiera para el administrador.
+</div>
+{% endif %}
+
+<div class="table-card">
+<div class="table-responsive">
+<table class="table table-striped table-hover align-middle mb-0">
+    <thead>
+        <tr>
+            {% for col in columnas %}
+                <th>{{ col }}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for fila in filas %}
+        <tr>
+            {% for valor in fila %}
+                <td>{{ valor }}</td>
+            {% endfor %}
+        </tr>
+        {% else %}
+        <tr><td colspan="{{ columnas|length }}" class="text-center text-muted py-4">No hay registros en esta tabla todavía.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+</div>
+{% endblock %}
